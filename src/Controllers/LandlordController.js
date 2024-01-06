@@ -10,8 +10,7 @@ const signUp = async function (req, res) {
   //Tocken generate
 
   const {
-    Landlord_ID,
-    First_name,
+    First_Name,
     Last_Name,
     Email_ID,
     Phone_No,
@@ -19,8 +18,7 @@ const signUp = async function (req, res) {
     Gender,
     City_ID,
     Date_Of_Birth,
-    Pancard_Number,
-    No_Of_Properties,
+    Pancard_Number
   } = req.body;
   try {
     const existingUser = await LandlordModel.findOne({ Email_ID: Email_ID });
@@ -30,8 +28,8 @@ const signUp = async function (req, res) {
     const hashPassword = await bcrypt.hash(Password,10);
 
     const result = await LandlordModel.create({
-      Landlord_ID:Landlord_ID,
-      First_name: First_name,
+      Landlord_ID:"1",
+      First_Name: First_Name,
       Last_Name: Last_Name,
       Email_ID: Email_ID,
       Phone_No: Phone_No,
@@ -40,14 +38,17 @@ const signUp = async function (req, res) {
       City_ID: City_ID,
       Date_Of_Birth: Date_Of_Birth,
       Pancard_Number: Pancard_Number,
-      No_Of_Properties: No_Of_Properties,
+      No_Of_Properties: "0",
     });
 
     const token = jsonwebtoken.sign(
       { Email_ID: result.Email_ID, _id: result.Landlord_ID },
       SECRET_KEY
     );
-    res.status(201).json({ user: result, token: token });
+    res.cookie("uid",token,{
+      httpOnly:true
+    })
+    return res.redirect("/");
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Some thing went wrong" });

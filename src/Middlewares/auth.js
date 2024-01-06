@@ -2,9 +2,8 @@ const jsonwebtoken=require("jsonwebtoken")
 const SECRET_KEY = "LeaseEase"
 const auth = function (req, res, next) {
     try {
-        let token = req.headers.authorization;
+        let token = req.cookies?.uid;
         if (token) {
-            token = token.split(" ")[1];
             let user=jsonwebtoken.verify(token,SECRET_KEY);
             req.userID=user.id
         }

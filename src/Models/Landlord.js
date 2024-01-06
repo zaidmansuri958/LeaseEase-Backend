@@ -50,4 +50,4 @@ const landLordSchema=mongoose.Schema({
 },{ timeStamps: true });
 
 
-module.exports = mongoose.model("Landlords", landLordSchema);
+module.exports = mongoose.model("landlords", landLordSchema);
