@@ -1,8 +1,10 @@
 const express = require("express")
 const PropertiesRoutes = express.Router();
-const getProperties= require("../Controllers/PropertiesController")
+const {getProperties,addProperties}= require("../Controllers/PropertiesController")
+const multer=require("multer");
 
 
 PropertiesRoutes.get("/", getProperties)
+PropertiesRoutes.post("/",addProperties)
 
 module.exports = PropertiesRoutes;

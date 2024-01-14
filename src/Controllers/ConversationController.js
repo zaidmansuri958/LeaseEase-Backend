@@ -1,6 +1,7 @@
 const express = require("express");
 const Conversation = require("../Models/Conversation");
 
+
 const newConversation = async function (req, res) {
   const conversation = new Conversation({
     member: [req.body.senderId, req.body.receiverId],

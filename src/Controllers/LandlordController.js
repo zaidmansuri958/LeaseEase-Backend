@@ -18,17 +18,17 @@ const signUp = async function (req, res) {
     Gender,
     City_ID,
     Date_Of_Birth,
-    Pancard_Number
+    Pancard_Number,
   } = req.body;
   try {
     const existingUser = await LandlordModel.findOne({ Email_ID: Email_ID });
     if (existingUser) {
       return res.status(400).json({ message: "User alrady exists" });
     }
-    const hashPassword = await bcrypt.hash(Password,10);
+    const hashPassword = await bcrypt.hash(Password, 10);
 
     const result = await LandlordModel.create({
-      Landlord_ID:"1",
+      Landlord_ID: "1",
       First_Name: First_Name,
       Last_Name: Last_Name,
       Email_ID: Email_ID,
@@ -42,13 +42,10 @@ const signUp = async function (req, res) {
     });
 
     const token = jsonwebtoken.sign(
-      { Email_ID: result.Email_ID, _id: result.Landlord_ID },
+      { Email_ID: result.Email_ID, _id: result.__id},
       SECRET_KEY
     );
-    res.cookie("uid",token,{
-      httpOnly:true
-    })
-    return res.redirect("/");
+    return res.status(200).json({ token: token });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Some thing went wrong" });
@@ -56,14 +53,14 @@ const signUp = async function (req, res) {
 };
 
 const signIn = async function (req, res) {
-  const { Email_ID, Password } = req.body;
+  const { Login_Email_ID, Login_Password } = req.body;
 
   try {
-    const existingUser = await LandlordModel.findOne({ Email_ID: Email_ID });
+    const existingUser = await LandlordModel.findOne({ Email_ID: Login_Email_ID });
     if (!existingUser) {
       return res.status(404).json({ message: "User is not exists" });
     }
-    const matchPassword = await bcrypt.compare(Password, existingUser.Password);
+    const matchPassword = await bcrypt.compare(Login_Password, existingUser.Password);
 
     if (!matchPassword) {
       return res.status(400).json({ messge: "Invalid Credentials" });
@@ -79,14 +76,24 @@ const signIn = async function (req, res) {
   }
 };
 
-// const getUser = async function (req, res) {
-//   try {
-//     const user = await userModel.findOne({ _id: req.userID });
-//     res.status(200).json(user);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "something went wrong" });
-//   }
-// };
+const getLandlord = async function (req, res) {
+  try {
+    const user = await LandlordModel.findOne({ _id: req.userID });
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "something went wrong" });
+  }
+};
 
-module.exports = { signUp, signIn };
+const getLandlordById= async function(req,res){
+  try{
+    const user=await LandlordModel.findOne({_id:req.params.landlordId});
+    return res.status(200).json(user);
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({message:"something went wrong"})
+  }
+}
+
+module.exports = { signUp, signIn, getLandlord,getLandlordById };

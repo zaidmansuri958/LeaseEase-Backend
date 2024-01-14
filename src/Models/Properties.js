@@ -23,6 +23,11 @@ const propertiesSchema = mongoose.Schema({
         required: true
     },
 
+    depositAmount: {
+        type: mongoose.Types.Decimal128,
+        required: true
+    },
+
     availability:{
         type:Number,
         required:true
@@ -42,8 +47,7 @@ const propertiesSchema = mongoose.Schema({
         required:true
     },
     Amenities:{
-        type:[mongoose.Schema.Types.ObjectId],
-        ref:"Amenities",
+        type:Array,
         require:true
     },
     squareFootage:{
@@ -55,8 +59,7 @@ const propertiesSchema = mongoose.Schema({
         required:true
     },
     propertyMedia:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"PropertyMedia",
+        type:Array,
         require:true
     },
 
