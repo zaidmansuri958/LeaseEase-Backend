@@ -25,4 +25,16 @@ const fetchConversation = async function (req, res) {
   }
 };
 
-module.exports = { newConversation,fetchConversation };
+const isConversationExists=async function (req,res){
+  try {
+    const conversation = await Conversation.findOne({
+      member: { $all: [req.params.firstUserId, req.params.secondUserId] },
+    });
+    console.log(conversation)
+    res.status(200).json(conversation)
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+module.exports = { newConversation,fetchConversation,isConversationExists };
