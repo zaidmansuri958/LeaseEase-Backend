@@ -1,4 +1,4 @@
-const LandlordModel = require("../Models/Landlord");
+const TenantModel = require("../Models/Tenant");
 const bcrypt = require("bcrypt");
 const jsonwebtoken = require("jsonwebtoken");
 const SECRET_KEY = "LeaseEase";
@@ -10,7 +10,7 @@ const signUp = async function (req, res) {
   //Tocken generate
 
   const {
-    Landlord_ID,
+    Tenant_ID,
     First_Name,
     Last_Name,
     Email_ID,
@@ -20,16 +20,17 @@ const signUp = async function (req, res) {
     City_ID,
     Date_Of_Birth,
     Pancard_Number,
+    Marital_Status
   } = req.body;
   try {
-    const existingUser = await LandlordModel.findOne({ Email_ID: Email_ID });
+    const existingUser = await TenantModel.findOne({ Email_ID: Email_ID });
     if (existingUser) {
       return res.status(400).json({ message: "User alrady exists" });
     }
     const hashPassword = await bcrypt.hash(Password, 10);
 
-    const result = await LandlordModel.create({
-      Landlord_ID: Landlord_ID,
+    const result = await TenantModel.create({
+      Tenant_ID: Tenant_ID,
       First_Name: First_Name,
       Last_Name: Last_Name,
       Email_ID: Email_ID,
@@ -39,7 +40,7 @@ const signUp = async function (req, res) {
       City_ID: City_ID,
       Date_Of_Birth: Date_Of_Birth,
       Pancard_Number: Pancard_Number,
-      No_Of_Properties: "0",
+      Marital_Status: Marital_Status,
     });
 
     const token = jsonwebtoken.sign(
@@ -57,7 +58,7 @@ const signIn = async function (req, res) {
   const { Login_Email_ID, Login_Password } = req.body;
 
   try {
-    const existingUser = await LandlordModel.findOne({ Email_ID: Login_Email_ID });
+    const existingUser = await TenantModel.findOne({ Email_ID: Login_Email_ID });
     if (!existingUser) {
       return res.status(404).json({ message: "User is not exists" });
     }
@@ -77,9 +78,9 @@ const signIn = async function (req, res) {
   }
 };
 
-const getLandlord = async function (req, res) {
+const getTenant = async function (req, res) {
   try {
-    const user = await LandlordModel.findOne({ _id: req.userID });
+    const user = await TenantModel.findOne({ _id: req.userID });
     return res.status(200).json(user);
   } catch (error) {
     console.log(error);
@@ -87,12 +88,12 @@ const getLandlord = async function (req, res) {
   }
 };
 
-const updateLandlord=async function(req,res){
+const updateTenant=async function(req,res){
   id=req.params.id
   const updatedProfile=req.body
   try{
-    const landlord=await LandlordModel.updateOne({_id:id}, { $set: updatedProfile})
-    res.status(202).json(landlord)
+    const tenant=await TenantModel.updateOne({_id:id}, { $set: updatedProfile})
+    res.status(202).json(tenant)
 
   }catch(error){
     console.log(error)
@@ -100,9 +101,9 @@ const updateLandlord=async function(req,res){
   }
 }
 
-const getLandlordById= async function(req,res){
+const getTenantById= async function(req,res){
   try{
-    const user=await LandlordModel.findOne({_id:req.params.landlordId});
+    const user=await TenantModel.findOne({_id:req.params.tenantId});
     return res.status(200).json(user);
   }catch(err){
     console.log(err);
@@ -110,4 +111,4 @@ const getLandlordById= async function(req,res){
   }
 }
 
-module.exports = { signUp, signIn, getLandlord,getLandlordById,updateLandlord};
+module.exports = { signUp, signIn, getTenant,getTenantById,updateTenant};
