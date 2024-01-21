@@ -9,6 +9,7 @@ const conversationRoutes=require("./Routes/ConversationRoutes");
 const messageRoutes=require("./Routes/MessageRoutes");
 const propertiesRoutes=require("./Routes/PropertiesRoutes");
 const tenantRoutes=require("./Routes/TenantRoutes");
+const cityRoutes=require("./Routes/CityRoutes");
 
 
 const PORT = process.PORT || 5000
@@ -25,6 +26,7 @@ app.use("/conversation",conversationRoutes);
 app.use("/message",messageRoutes);
 app.use("/properties",propertiesRoutes);
 app.use("/tenant",tenantRoutes);
+app.use("/city",cityRoutes);
 
 mongoose.connect(process.env.DB)
     .then(function () {

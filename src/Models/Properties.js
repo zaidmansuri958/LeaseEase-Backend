@@ -7,6 +7,11 @@ const propertiesSchema = mongoose.Schema({
         unique:true
     },
 
+    propertyName: {
+        type: String,
+        required: true,
+    },
+
     LandlordId: {
         type:mongoose.Schema.Types.ObjectId,
         ref:"Landlords",

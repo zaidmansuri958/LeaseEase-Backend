@@ -4,7 +4,7 @@ const PropertiesModel = require("../Models/Properties");
 const getProperties = async function (req, res) {
   try {
     const properties = await PropertiesModel.find();
-    res.status(200).json({ data: properties });
+    res.status(200).json(properties);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something wrong happen" });
@@ -14,7 +14,7 @@ const getProperties = async function (req, res) {
 const getPropertiesByLandlord=async function(req,res){
   try{
     const properties=await PropertiesModel.find({LandlordId:req.userID})
-    res.status(200).json({data:properties})
+    res.status(200).json(properties)
   }catch(error){
     console.log(error);
     res.status(500).json({message:"Something wrong happen"})
@@ -45,10 +45,23 @@ const updateProperties=async function(req,res){
   }
 }
 
+const getPopularProperties=async function(req,res){
+  const limit=6
+  try {
+    const properties = await PropertiesModel.aggregate().sample(limit).limit(limit);
+    res.status(200).json(properties);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something wrong happen" });
+  }
+
+}
+
 const addProperties = async function (req, res) {
+  const LandlordId=req.userID;
   const {
     propertyID,
-    LandlordId,
+    propertyName,
     propertyAddress,
     rentAmount,
     depositAmount,
@@ -67,6 +80,7 @@ const addProperties = async function (req, res) {
     const result = await PropertiesModel.create({
         propertyID: propertyID,
         LandlordId: LandlordId,
+        propertyName:propertyName,
         propertyAddress: propertyAddress,
         rentAmount: rentAmount,
         depositAmount:depositAmount,
@@ -87,4 +101,4 @@ const addProperties = async function (req, res) {
   }
 };
 
-module.exports = {getProperties,addProperties,getPropertiesByLandlord,removeProperties,updateProperties};
+module.exports = {getProperties,addProperties,getPropertiesByLandlord,removeProperties,updateProperties,getPopularProperties};
