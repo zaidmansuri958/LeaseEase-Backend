@@ -11,13 +11,26 @@ const getProperties = async function (req, res) {
   }
 };
 
+// const getPropertiesById = async function (req, res) {
+//   try {
+//     const properties = await PropertiesModel.find({_id:req.params.id});
+//     res.status(200).json(properties);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: "Something wrong happen" });
+//   }
+// };
+
 const getPropertiesByLandlord=async function(req,res){
+  const LandlordId=req.userID;
   try{
-    const properties=await PropertiesModel.find({LandlordId:req.userID})
+    console.log(req.userID)
+    const properties=await PropertiesModel.find({LandlordId:LandlordId})
+    console.log(properties)
     res.status(200).json(properties)
   }catch(error){
     console.log(error);
-    res.status(500).json({message:"Something wrong happen"})
+    res.status(500).json({message:error})
   }
 }
 
@@ -52,7 +65,7 @@ const getPopularProperties=async function(req,res){
     res.status(200).json(properties);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Something wrong happen" });
+    res.status(500).json({ message:error});
   }
 
 }

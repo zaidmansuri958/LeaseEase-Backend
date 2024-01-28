@@ -6,6 +6,7 @@ const auth=require("../MiddleWares/auth")
 
 
 PropertiesRoutes.get("/", getProperties)
+// PropertiesRoutes.get("/:id", getPropertiesById)
 PropertiesRoutes.get("/landlord",auth,getPropertiesByLandlord)
 PropertiesRoutes.post("/",auth,addProperties)
 PropertiesRoutes.delete("/:id",removeProperties)

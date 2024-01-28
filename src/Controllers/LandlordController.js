@@ -88,7 +88,7 @@ const getLandlord = async function (req, res) {
 };
 
 const updateLandlord=async function(req,res){
-  id=req.params.id
+  id=req.userID
   const updatedProfile=req.body
   try{
     const landlord=await LandlordModel.updateOne({_id:id}, { $set: updatedProfile})
@@ -110,4 +110,15 @@ const getLandlordById= async function(req,res){
   }
 }
 
-module.exports = { signUp, signIn, getLandlord,getLandlordById,updateLandlord};
+const getLandlordByEmail= async function(req,res){
+  try{
+    const user=await LandlordModel.findOne({Email_ID:req.params.emailId});
+    return res.status(200).json(user);
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({message:"something went wrong"})
+  }
+}
+
+
+module.exports = { signUp, signIn, getLandlord,getLandlordById,updateLandlord,getLandlordByEmail};

@@ -111,4 +111,14 @@ const getTenantById= async function(req,res){
   }
 }
 
-module.exports = { signUp, signIn, getTenant,getTenantById,updateTenant};
+const getTenantByEmail= async function(req,res){
+  try{
+    const user=await TenantModel.findOne({Email_ID:req.params.emailId});
+    return res.status(200).json(user);
+  }catch(err){
+    console.log(err);
+    return res.status(500).json({message:"something went wrong"})
+  }
+}
+
+module.exports = { signUp, signIn, getTenant,getTenantById,updateTenant,getTenantByEmail};
