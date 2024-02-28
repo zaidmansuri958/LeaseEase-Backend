@@ -11,15 +11,15 @@ const getProperties = async function (req, res) {
   }
 };
 
-// const getPropertiesById = async function (req, res) {
-//   try {
-//     const properties = await PropertiesModel.find({_id:req.params.id});
-//     res.status(200).json(properties);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ message: "Something wrong happen" });
-//   }
-// };
+const getPropertiesById = async function (req, res) {
+  try {
+    const properties = await PropertiesModel.find({_id:req.params.id});
+    res.status(200).json(properties);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something wrong happen" });
+  }
+};
 
 const getPropertiesByLandlord=async function(req,res){
   const LandlordId=req.userID;
@@ -114,4 +114,4 @@ const addProperties = async function (req, res) {
   }
 };
 
-module.exports = {getProperties,addProperties,getPropertiesByLandlord,removeProperties,updateProperties,getPopularProperties};
+module.exports = {getProperties,addProperties,getPropertiesByLandlord,removeProperties,updateProperties,getPopularProperties,getPropertiesById};

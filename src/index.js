@@ -13,6 +13,7 @@ const tenantRoutes=require("./Routes/TenantRoutes");
 const cityRoutes=require("./Routes/CityRoutes");
 const agreementRoutes=require("./Routes/AgreementRoutes");
 const complaintRoutes=require("./Routes/ComplaintRoutes");
+const adminRoutes=require("./Routes/AdminRoutes");
 
 
 const PORT = process.PORT || 5000
@@ -32,6 +33,7 @@ app.use("/tenant",tenantRoutes);
 app.use("/city",cityRoutes);
 app.use("/agreement",agreementRoutes);
 app.use("/complaints",complaintRoutes);
+app.use("/admin",adminRoutes)
 
 // export const instance=new Razorpay({ 
 //     key_id: process.env.RAZOR_PAY_API_KEY, 

@@ -57,8 +57,20 @@ const getComplaintByLandlord=async function(req,res){
   }
 }
 
+const getAllComplaints = async function (req, res) {
+  try {
+    const complaints = await ComplaintsModel.find();
+    res.status(200).json(complaints);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something wrong happen" });
+  }
+};
+
+
 module.exports = {
     addComplaint,
     getComplaintbyTenant,
-    getComplaintByLandlord
+    getComplaintByLandlord,
+    getAllComplaints
   };

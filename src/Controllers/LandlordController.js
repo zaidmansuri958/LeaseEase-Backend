@@ -23,8 +23,14 @@ const signUp = async function (req, res) {
   } = req.body;
   try {
     const existingUser = await LandlordModel.findOne({ Email_ID: Email_ID });
+    const mobileNumber=await LandlordModel.findOne({Phone_No:Phone_No});
+    const pancardNumber=await LandlordModel.findOne({Pancard_Number:Pancard_Number});
     if (existingUser) {
-      return res.status(400).json({ message: "User alrady exists" });
+      return res.status(400).json({ message: "Email ID already registered" });
+    }else if(mobileNumber){
+      return res.status(400).json({ message: "Phone Number already registered" });
+    }else if(pancardNumber){
+      return res.status(400).json({ message: "Pancard Number already registered" });
     }
     const hashPassword = await bcrypt.hash(Password, 10);
 
@@ -120,5 +126,16 @@ const getLandlordByEmail= async function(req,res){
   }
 }
 
+const getAllLandlords = async function (req, res) {
+  try {
+    const landlords = await LandlordModel.find();
+    res.status(200).json(landlords);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Something wrong happen" });
+  }
+};
 
-module.exports = { signUp, signIn, getLandlord,getLandlordById,updateLandlord,getLandlordByEmail};
+
+
+module.exports = { signUp, signIn, getLandlord,getLandlordById,updateLandlord,getLandlordByEmail,getAllLandlords};
